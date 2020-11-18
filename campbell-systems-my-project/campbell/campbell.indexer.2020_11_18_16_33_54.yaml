@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    creationTimestamp: "2020-11-18T16:34:57Z"
+    labels:
+        tufin-mode: auto-generated
+        tufin-owner: tufin-orca
+    name: default.indexer
+    namespace: default
+spec:
+    egress:
+      - to:
+          - namespaceSelector:
+                matchLabels:
+                    namespace: kube-system # missing label - see note 2 above
+            podSelector:
+                matchLabels:
+                    k8s-app: kube-dns
+      - to:
+          - podSelector:
+                matchLabels:
+                    app: redis
+    podSelector:
+        matchLabels:
+            app: indexer
+    policyTypes:
+      - Egress
+---

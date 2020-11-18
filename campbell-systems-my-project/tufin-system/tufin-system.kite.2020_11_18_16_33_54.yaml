@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    creationTimestamp: "2020-11-18T16:34:57Z"
+    labels:
+        tufin-mode: auto-generated
+        tufin-owner: tufin-orca
+    name: tufin-system.kite
+    namespace: tufin-system
+spec:
+    egress:
+      - to:
+          - ipBlock:
+                cidr: 104.155.122.222/32 # guru.tufin.io
+      - to:
+          - namespaceSelector:
+                matchLabels:
+                    namespace: kube-system # missing label - see note 2 above
+            podSelector:
+                matchLabels:
+                    k8s-app: kube-dns
+    podSelector:
+        matchLabels:
+            app: kite
+    policyTypes:
+      - Egress
+---
